@@ -10,25 +10,25 @@ import lombok.ToString;
 @Table(name = "Autores")
 @Getter @Setter @ToString
 public class Autor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+
+    @Column(unique = true, nullable = false)
     private String nombre;
 
     private Integer añoNacimiento;
     private Integer añoMuerte;
 
-    @Transient
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Libro> libros;
-
 
     public Autor() {}
 
-    public Autor(DatosAutor a) {
-        this.nombre = a.nombre();
-        this.añoNacimiento = a.fechaDeNacimiento();
-        this.añoMuerte = a.fechaDeFallecimiento();
+    public Autor(DatosAutor datos) {
+        this.nombre = datos.nombre();
+        this.añoNacimiento = datos.fechaDeNacimiento();
+        this.añoMuerte = datos.fechaDeFallecimiento();
     }
 }
+

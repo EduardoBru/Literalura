@@ -7,22 +7,17 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ConsumoApi {
-public static String obtenerDatos(String url) {
+    public static String obtenerDatos(String url) {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
-        String json = response.body();
-        return json;
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt(); // Reestablece el estado de interrupción
+            throw new RuntimeException("Error al obtener datos de la API: " + e.getMessage(), e);
+        }
     }
 }
+

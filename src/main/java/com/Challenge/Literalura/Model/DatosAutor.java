@@ -9,4 +9,13 @@ public record DatosAutor(
         @JsonAlias("birth_year") Integer fechaDeNacimiento,
         @JsonAlias("death_year") Integer fechaDeFallecimiento
 ) {
+    // Method to convert DatosAutor to Autor
+    public Autor toAutor() {
+        Autor autor = new Autor();
+        autor.setNombre(this.nombre);
+        autor.setAñoNacimiento(this.fechaDeNacimiento);
+        autor.setAñoMuerte(this.fechaDeFallecimiento);
+        return autor;
+    }
 }
+
